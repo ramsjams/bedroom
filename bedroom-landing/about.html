@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" class="sub">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About · Bedroom Productions</title>
+  <meta name="theme-color" content="#000000">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="pages.css">
+</head>
+<body>
+  <nav class="nav" aria-label="Main">
+    <a class="nav__link" href="contact.html" data-key="contact"><img src="assets/nav/contact.png" alt="Contact"></a>
+    <a class="nav__link" href="merch.html" data-key="merch"><img src="assets/nav/merch.png" alt="Merch"></a>
+    <a class="nav__link" href="index.html" data-key="home"><img src="assets/nav/home.png" alt="Home"></a>
+    <a class="nav__link" href="about.html" data-key="about" aria-current="page"><img src="assets/nav/about.png" alt="About"></a>
+    <a class="nav__link" href="productions.html" data-key="team"><img src="assets/nav/team.png" alt="Team"></a>
+  </nav>
+
+  <main class="about">
+    <div class="about__photo" id="slides" aria-label="Photos of Bedroom Productions">
+      <img src="assets/about/about-1.webp" alt="" class="on">
+      <img src="assets/about/about-2.webp" alt="">
+      <img src="assets/about/about-3.webp" alt="">
+      <img src="assets/about/about-4.webp" alt="">
+      <img src="assets/about/about-5.webp" alt="">
+      <img src="assets/about/about-6.webp" alt="">
+    </div>
+    <section class="about__text">
+      <p class="about__p"><span class="dim">BEDROOM PRODS (Bedroom Productions) is an independent Tunisian music label and creative collective founded in 2020 by artist and producer RamsJamsss.</span></p>
+      <p class="about__p">Operating at the forefront of the North African underground scene, the collective serves as a collaborative hub for alternative youth culture, bridging innovative audio production with visual arts.</p>
+      <p class="about__p">Known for its genre-bending catalog, BEDROOM PRODS champions a distinct fusion of alternative rap, experimental electronic music, indie r&amp;b, and ambient soundscapes, driving the new wave of the Tunisian independent music movement.</p>
+    </section>
+  </main>
+
+  <script>
+  /* Crossfade slideshow: photos fade into each other in the order they appear above. */
+  (() => {
+    const imgs = [...document.querySelectorAll('#slides img')];
+    const HOLD = 4500;                       // ms each photo stays (change me)
+    let i = 0;
+    if (imgs.length < 2 || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    setInterval(() => {
+      imgs[i].classList.remove('on');
+      i = (i + 1) % imgs.length;
+      imgs[i].classList.add('on');
+    }, HOLD);
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bedroom Productions</title>
+  <meta name="theme-color" content="#000000">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- BACKGROUNDS: one layer per logo is created here by script.js -->
+  <div class="backdrop" id="backdrop" aria-hidden="true"></div>
+
+  <!-- NAVBAR ------------------------------------------------------------
+       Each item is a PNG. The line under the selected one is drawn in CSS.
+       To change which page is selected, move aria-current="page".
+       Replace the href="#..." with your real pages (e.g. href="contact.html"). -->
+  <nav class="nav" id="nav" aria-label="Main"></nav>
+
+  <!-- LOGO WHEEL ---------------------------------------------------------
+       Order here = order on the wheel (left to right). data-start marks the
+       logo that sits in the middle on page load. data-bg = that logo's background
+       (a colour like #000, or an image path). Add more <li> to add more logos. -->
+  <!-- Safari fallback: turns a "colour on top / matte below" video into a transparent one (see script.js) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <filter id="bp-unpack" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feOffset id="bp-unpack-shift" in="SourceGraphic" dx="0" dy="0" result="m"/>
+      <feColorMatrix in="m" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.2126 0.7152 0.0722 0 0" result="a"/>
+      <feComposite in="SourceGraphic" in2="a" operator="in"/>
+    </filter>
+  </svg>
+  <main class="stage" aria-roledescription="carousel" aria-label="Bedroom divisions">
+    <ul class="wheel" id="wheel">
+      <li class="item" data-name="Bedroom Records" data-ink="dark" data-nav="records" data-bg="assets/bg/records.jpg" data-href="releases.html" data-insta="https://www.instagram.com/bedroom.recordings/" data-tag="The label" data-desc="Releases, artists and shows from the Tunisian underground.">
+        <video data-src="assets/logos/records" muted loop playsinline preload="auto" aria-hidden="true"></video>
+      </li>
+      <li class="item" data-name="Bedroom Productions" data-nav="productions" data-bg="#000" data-href="productions.html" data-insta="https://www.instagram.com/bedroomprods/" data-tag="The creative collective" data-desc="An audio team and a visual team, making music, sound and imagery." data-start>
+        <video data-src="assets/logos/productions" muted loop playsinline preload="auto" aria-hidden="true"></video>
+      </li>
+      <li class="item" data-name="Bedroom Media" data-ink="dark" data-nav="media" data-bg="assets/bg/media.jpg" data-href="https://www.instagram.com/bedroommedia_/" data-external data-insta="https://www.instagram.com/bedroommedia_/" data-tag="The media division" data-desc="Stories, films and photography. Pages coming soon, find us on Instagram for now.">
+        <video data-src="assets/logos/media" muted loop playsinline preload="auto" aria-hidden="true"></video>
+      </li>
+    </ul>
+
+    <button class="arrow arrow--prev" id="prev" aria-label="Previous"><img src="assets/arrow.png" alt=""></button>
+    <button class="arrow arrow--next" id="next" aria-label="Next"><img src="assets/arrow.png" alt=""></button>
+
+    <div class="intro" id="intro">Bedroom is a Tunisian creative collective: music, sound and visuals.</div>
+    <div class="caption" id="caption">
+      <p class="caption__tag" id="cap-tag"></p>
+      <p class="caption__desc" id="cap-desc"></p>
+      <div class="caption__row">
+        <a class="caption__enter" id="cap-enter" href="#">ENTER <span aria-hidden="true">&rarr;</span></a>
+        <a class="caption__insta" id="cap-insta" href="#" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.4-3.4a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z"/></svg></a>
+      </div>
+      <div class="dots" id="dots" role="tablist" aria-label="Divisions"></div>
+    </div>
+    <p class="sr-only" id="live" aria-live="polite"></p>
+  </main>
+
+  <script src="nav.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

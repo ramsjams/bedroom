@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" class="sub">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Releases · Bedroom Records</title>
+  <meta name="theme-color" content="#000000">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="pages.css">
+</head>
+<body class="shows-page releases-page">
+  <nav class="nav" id="nav" aria-label="Main"></nav>
+
+  <main class="releases" id="releases" aria-roledescription="carousel" aria-label="Releases">
+    <div class="releases__head" id="head">
+      <button class="releases__arrow releases__arrow--prev" id="prev" aria-label="Previous release"><img src="assets/arrow.png" alt=""></button>
+      <h1 class="releases__title" id="title"></h1>
+      <button class="releases__arrow releases__arrow--next" id="next" aria-label="Next release"><img src="assets/arrow.png" alt=""></button>
+    </div>
+    <div class="releases__stage">
+    <ul class="releases__row" id="row"></ul>
+    <div class="releases__cardwrap" id="cardwrap">
+      <aside class="releases__card" id="card" aria-label="Listen" inert>
+        <h2 id="card-title"></h2>
+        <div class="releases__links" id="links"></div>
+      </aside>
+    </div>
+    </div>
+    <p class="sr-only" id="live" aria-live="polite"></p>
+  </main>
+
+  <script src="nav.js"></script>
+  <script>window.bpNav(document.getElementById('nav'), 'records', 'releases');</script>
+  <script src="data/releases.js"></script>
+  <script src="releases.js"></script>
+</body>
+</html>

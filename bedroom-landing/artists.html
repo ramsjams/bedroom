@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" class="sub">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Artists · Bedroom Records</title>
+  <meta name="theme-color" content="#000000">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="pages.css">
+</head>
+<body class="shows-page artists-page">
+  <nav class="nav" id="nav" aria-label="Main"></nav>
+  <a class="back" href="index.html#records" aria-label="Back"><img src="assets/arrow.png" alt=""></a>
+
+  <main class="artists" id="artists">
+    <h1 class="sr-only">Artists</h1>
+    <div class="artists__listwrap" id="listwrap"><ol class="artists__list" id="list"></ol></div>
+    <div class="artists__stage" id="stage"><div class="artists__track" id="track"></div></div>
+    <div class="artists__biowrap"><aside class="artists__bio" id="bio" aria-live="polite">
+      <p id="bio-text"></p>
+      <div class="artists__links" id="links"></div>
+    </aside></div>
+  </main>
+
+  <script src="nav.js"></script>
+  <script>window.bpNav(document.getElementById('nav'), 'records', 'artists');</script>
+  <script src="data/artists.js"></script>
+  <script src="artists.js"></script>
+</body>
+</html>
