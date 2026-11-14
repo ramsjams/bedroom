@@ -55,16 +55,26 @@
     v.addEventListener('loadeddata', () => { draw(); loop(); }, { once: true });
     v.src = v.dataset.src + '.mp4'; v.load();
   };
+  // Load the centred logo first; the other two start once it is ready (or after 2.5 s), so nothing competes for bandwidth.
+  const loaders = new Map();
   videos.forEach(v => {
     const base = v.dataset.src;
-    if (forcePacked) return usePacked(v);
-    if (useMov) { v.addEventListener('error', () => usePacked(v), { once: true }); v.src = base + '.mov'; }
-    else v.src = base + '.webm';
+    v.preload = 'none'; v.poster = base + '-poster.webp';
+    loaders.set(v, () => {
+      v.preload = 'auto';
+      if (forcePacked) return usePacked(v);
+      if (useMov) { v.addEventListener('error', () => usePacked(v), { once: true }); v.src = base + '.mov'; }
+      else v.src = base + '.webm';
+    });
   });
 
   // start on the logo named in the URL (#records / #media) – that's where HOME links from other sections lead
   const hashStart = items.findIndex(el => el.dataset.nav === location.hash.slice(1));
   let current = hashStart >= 0 ? hashStart : Math.max(0, items.findIndex(el => el.hasAttribute('data-start')));
+  { const first = videos.get(items[current]); let started = false;
+    const rest = () => { if (started) return; started = true; videos.forEach(v => { if (v !== first) loaders.get(v)(); }); };
+    first.addEventListener('loadeddata', rest, { once: true }); setTimeout(rest, 2500);
+    loaders.get(first)(); }
   const lastPos = new Map();               // remembers each element's previous slot
 
   // shortest signed distance of item i from the centre, wrapped around the circle
