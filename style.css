@@ -99,7 +99,9 @@ body { display: flex; flex-direction: column; -webkit-tap-highlight-color: trans
 .item video { width: 100%; height: 100%; display: block; pointer-events: none; }
 /* packed video (Safari fallback): twice as tall as the logo box – colour on top, matte below – filtered into transparency */
 .item.packed { overflow: hidden; }
-.item.packed video { position: absolute; left: 0; top: 0; width: 100%; height: 200%; filter: url(#bp-unpack); }
+.item.packed video { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; }
+.item.packed-svg video { opacity: 1; height: 200%; filter: url(#bp-unpack); }
+.item.packed canvas { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
 
 /* position states set by script.js via data-pos */
 .item[data-pos="0"]  { z-index: 3; cursor: default; }

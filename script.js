@@ -23,17 +23,44 @@
   //  Chrome/Firefox/Edge : transparent .webm
   //  Safari / iPhone     : transparent .mov if you made one (make-safari-videos.sh), otherwise the
   //                        "packed" .mp4 (colour on top, matte below) which an SVG filter turns transparent.
-  const forcePacked = location.search.includes('packed');
-  const unpackShift = document.getElementById('bp-unpack-shift');
-  const sizeUnpack = () => { const it = items[0]; if (unpackShift && it) unpackShift.setAttribute('dy', -it.offsetHeight); };
-  const usePacked = (v) => { v.closest('.item').classList.add('packed'); sizeUnpack(); v.src = v.dataset.src + '.mp4'; v.load(); };
+  const forcePacked = location.search.includes('packed') || (isWebKit && !location.search.includes('mov'));
+  /* Safari / iPhone: the .mp4 holds colour (top half) and a black/white matte (bottom half).
+     A canvas redraws each frame with the matte used as transparency. (SVG filters on <video> are unreliable on iOS.) */
+  const usePacked = (v) => {
+    const item = v.closest('.item'); if (item.classList.contains('packed')) return;
+    item.classList.add('packed');
+    const cv = document.createElement('canvas'), ctx = cv.getContext('2d', { willReadFrequently: true });
+    item.appendChild(cv);
+    let W = 0, H = 0, off, octx, busy = false;
+    let dead = false;
+    const draw = () => {
+      if (!v.videoWidth || dead) return;
+      if (!W) { W = Math.min(720, v.videoWidth); H = Math.round(W * (v.videoHeight / 2) / v.videoWidth); cv.width = W; cv.height = H;
+        off = document.createElement('canvas'); off.width = W; off.height = H * 2; octx = off.getContext('2d', { willReadFrequently: true }); }
+      octx.drawImage(v, 0, 0, W, H * 2);
+      let px; try { px = octx.getImageData(0, 0, W, H * 2).data; } catch (e) {          // file:// blocks canvas reads -> SVG-filter route
+        dead = true; cv.remove(); item.classList.add('packed-svg'); const sh = document.getElementById('bp-unpack-shift'); if (sh) sh.setAttribute('dy', -item.offsetHeight); return; }
+      const out = ctx.createImageData(W, H), o = out.data, half = W * H * 4;
+      for (let i = 0; i < half; i += 4) {
+        const al = (px[half + i] * .2126 + px[half + i + 1] * .7152 + px[half + i + 2] * .0722);
+        o[i] = px[i]; o[i + 1] = px[i + 1]; o[i + 2] = px[i + 2]; o[i + 3] = al;
+      }
+      ctx.putImageData(out, 0, 0);
+    };
+    const loop = () => {
+      const pos = Math.abs(+item.dataset.pos || 0);
+      if (!document.hidden && pos <= 1 && !v.paused) draw();
+      if (v.requestVideoFrameCallback) v.requestVideoFrameCallback(loop); else requestAnimationFrame(loop);
+    };
+    v.addEventListener('loadeddata', () => { draw(); loop(); }, { once: true });
+    v.src = v.dataset.src + '.mp4'; v.load();
+  };
   videos.forEach(v => {
     const base = v.dataset.src;
     if (forcePacked) return usePacked(v);
     if (useMov) { v.addEventListener('error', () => usePacked(v), { once: true }); v.src = base + '.mov'; }
     else v.src = base + '.webm';
   });
-  addEventListener('resize', sizeUnpack);
 
   // start on the logo named in the URL (#records / #media) – that's where HOME links from other sections lead
   const hashStart = items.findIndex(el => el.dataset.nav === location.hash.slice(1));

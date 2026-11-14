@@ -41,7 +41,7 @@
         const row = el(it.href ? 'a' : 'span', 'row');
         if (it.href) { row.href = it.href; row.target = '_blank'; row.rel = 'noopener'; }
         row.appendChild(el('span', '', it.t));
-        const tag = [it.type, it.href ? host(it.href) + ' ↗' : ''].filter(Boolean).join(' · ');
+        const tag = [it.type, it.href ? host(it.href) + ' ↗︎' : ''].filter(Boolean).join(' · ');
         if (tag) row.appendChild(el('small', '', tag));
         li.appendChild(row); ul.appendChild(li);
       });

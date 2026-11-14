@@ -116,7 +116,7 @@ a.tile:focus-visible { outline: 2px solid #000; outline-offset: 3px; }
   font-size: clamp(10px, .95vw, 17px);
 }
 .tile__cap span:last-child { flex: none; text-align: right; }
-a.tile .tile__cap span:first-child::after { content: " \2197"; }
+a.tile .tile__cap span:first-child::after { content: " \2197\FE0E"; }
 
 /* text lists (production, mixing, own releases) */
 .lists { margin-top: clamp(40px, 6vw, 120px); }
@@ -423,7 +423,7 @@ html.sub:has(.releases) { overflow: hidden; height: 100%; }
 .releases__links a:hover, .releases__links a:focus-visible { background: #000; color: #fff; outline: none; }
 .releases__links svg { width: 1.5em; height: 1.5em; flex: none; fill: currentColor; }
 .releases__links a span { flex: 1; }
-.releases__links a::after { content: "\2197"; font-weight: 500; }
+.releases__links a::after { content: ""; width: 1.1em; height: 1.1em; flex: none; background: currentColor; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4'%3E%3Cpath d='M6 18L18 6M8 6h10v10'/%3E%3C/svg%3E") center/contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4'%3E%3Cpath d='M6 18L18 6M8 6h10v10'/%3E%3C/svg%3E") center/contain no-repeat; }
 
 @media (max-width: 760px) {
   .releases { --c: min(66vw, 40dvh); }

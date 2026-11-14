@@ -46,7 +46,7 @@
     if (m.bio) d.appendChild(el('p', 'bio', m.bio));
     if (m.links.length) {
       const p = el('p', 'dossier__links');
-      m.links.forEach(l => { const a = el('a', '', l.text + ' ↗'); a.href = l.href; a.target = '_blank'; a.rel = 'noopener'; p.appendChild(a); });
+      m.links.forEach(l => { const a = el('a', '', l.text + ' ↗︎'); a.href = l.href; a.target = '_blank'; a.rel = 'noopener'; p.appendChild(a); });
       d.appendChild(p);
     }
     const wrap = el('div', 'dossier__work');

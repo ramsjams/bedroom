@@ -20,7 +20,7 @@
     if (it.soldOut) { b.disabled = true; b.setAttribute('aria-label', it.title + ' - sold out'); }
     else b.addEventListener('click', () => {
       const c = clean(load()); c[it.id] = (c[it.id] || 0) + 1; save(c);
-      b.textContent = 'ADDED ✓'; b.classList.add('ok'); clearTimeout(b._t); b._t = setTimeout(() => { b.textContent = 'ADD TO CART'; b.classList.remove('ok'); }, 1100);
+      b.textContent = 'ADDED'; b.classList.add('ok'); clearTimeout(b._t); b._t = setTimeout(() => { b.textContent = 'ADD TO CART'; b.classList.remove('ok'); }, 1100);
     });
     const href = 'product.html?id=' + encodeURIComponent(it.id);
     const pa = el('a', 'prod__link'); pa.href = href; pa.setAttribute('aria-label', it.title + ' - view details'); pa.appendChild(pic);
@@ -47,7 +47,7 @@
       if (it.soldOut) b.disabled = true;
       else b.addEventListener('click', () => {
         const c = clean(load()); c[it.id] = (c[it.id] || 0) + 1; save(c);
-        b.textContent = 'ADDED ✓'; b.classList.add('ok'); clearTimeout(b._t); b._t = setTimeout(() => { b.textContent = 'ADD TO CART'; b.classList.remove('ok'); }, 1100);
+        b.textContent = 'ADDED'; b.classList.add('ok'); clearTimeout(b._t); b._t = setTimeout(() => { b.textContent = 'ADD TO CART'; b.classList.remove('ok'); }, 1100);
       });
       info.appendChild(b);
       const wrap = el('div', 'pp'); wrap.append(pic, info); pr.append(back, wrap);

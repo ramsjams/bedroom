@@ -22,7 +22,7 @@
        Order here = order on the wheel (left to right). data-start marks the
        logo that sits in the middle on page load. data-bg = that logo's background
        (a colour like #000, or an image path). Add more <li> to add more logos. -->
-  <!-- Safari fallback: turns a "colour on top / matte below" video into a transparent one (see script.js) -->
+  <!-- Safari fallback for opening the files straight from disk (canvas is blocked on file://): see script.js -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <filter id="bp-unpack" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
       <feOffset id="bp-unpack-shift" in="SourceGraphic" dx="0" dy="0" result="m"/>
