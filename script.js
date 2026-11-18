@@ -15,7 +15,7 @@
 
   // construction tapes (shown only while Media is centred)
   const tapeField = document.getElementById('tape-field'), lampEl = document.getElementById('lamp');
-  [[30,-6,.9,-1,0,0,7,0,1.2],[42,6,.7,1,.18,0,6,1,1.02],[60,-5,.7,1,.36,0,8,1,.8],[68,6,.85,-1,.54,0,7,0,.6]].forEach(([y,r,sc,dir,d,sw0,sw,ig,lit]) => {
+  [[46,-11,.8,-1,0,0,7,0,1.08],[54,9,.8,1,.25,0,8,0,.78]].forEach(([y,r,sc,dir,d,sw0,sw,ig,lit]) => {
     const t = document.createElement('div'); t.className = 'tape';
     t.style.cssText = `--y:${y}%;--r:${r}deg;--s:${sc};--d:${d}s;--sw:${sw}s;--from:${dir * 120}%;--sk:${dir * 1.6}deg;--lit:${lit};--st:${Math.round(sw * 14)}`;
     const st = document.createElement('div'); st.className = 'tape__strip';
