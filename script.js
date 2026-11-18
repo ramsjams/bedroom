@@ -13,11 +13,32 @@
         slot  0 = centre,  -1 = left,  +1 = right
      with modulo math so it wraps forever. CSS animates between slots. */
 
+  // construction tapes (shown only while Media is centred)
+  const tapeField = document.getElementById('tape-field'), lampEl = document.getElementById('lamp');
+  [[30,-6,.9,-1,0,0,7,0,1.2],[42,6,.7,1,.18,0,6,1,1.02],[60,-5,.7,1,.36,0,8,1,.8],[68,6,.85,-1,.54,0,7,0,.6]].forEach(([y,r,sc,dir,d,sw0,sw,ig,lit]) => {
+    const t = document.createElement('div'); t.className = 'tape';
+    t.style.cssText = `--y:${y}%;--r:${r}deg;--s:${sc};--d:${d}s;--sw:${sw}s;--from:${dir * 120}%;--sk:${dir * 1.6}deg;--lit:${lit};--st:${Math.round(sw * 14)}`;
+    const st = document.createElement('div'); st.className = 'tape__strip';
+    for (let i = 0; i < 14; i++) { const x = document.createElement('span'); x.textContent = ig ? 'FIND MORE ON OUR INSTAGRAM  @BEDROOMMEDIA_' : 'UNDER CONSTRUCTION'; st.appendChild(x); }
+    t.appendChild(st); tapeField.appendChild(t);
+  });
   const items = [...document.querySelectorAll('#wheel .item')];
   const videos = new Map(items.map(el => [el, el.querySelector('video')]));
   const n = items.length;
   const live = document.getElementById('live');
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  
+  { let lastLamp = 0; const PERIOD = 13, SWING = 11, BOB = 9;
+    if (!reduceMotion) { const tick = (ms) => {
+      if (ms - lastLamp < 70) { requestAnimationFrame(tick); return; } lastLamp = ms;
+      if (lampEl.classList.contains('on') && !document.hidden) {
+        const ph = ms / 1000 * 2 * Math.PI / PERIOD;
+        lampEl.style.setProperty('--th', (SWING * Math.sin(ph)).toFixed(2) + 'deg');
+        lampEl.style.setProperty('--dy', (BOB * Math.cos(ph)).toFixed(2) + 'px');
+      }
+      requestAnimationFrame(tick); }; requestAnimationFrame(tick); }
+  }
 
   // point each <video> at its file.
   //  Chrome/Firefox/Edge : transparent .webm
@@ -55,10 +76,13 @@
     v.addEventListener('loadeddata', () => { draw(); loop(); }, { once: true });
     v.src = v.dataset.src + '.mp4'; v.load();
   };
+  const SPEED = 0.6;   // logo playback speed (1 = original; lower = slower)
   // Load the centred logo first; the other two start once it is ready (or after 2.5 s), so nothing competes for bandwidth.
   const loaders = new Map();
   videos.forEach(v => {
     const base = v.dataset.src;
+    const slow = () => { v.defaultPlaybackRate = SPEED; v.playbackRate = SPEED; };
+    slow(); ['loadedmetadata', 'play'].forEach(ev => v.addEventListener(ev, slow));
     v.preload = 'none'; v.poster = base + '-poster.webp';
     loaders.set(v, () => {
       v.preload = 'auto';
@@ -178,12 +202,16 @@
     cap.classList.add('out'); clearTimeout(capTimer);
     capTimer = setTimeout(() => {
       capTag.textContent = el.dataset.name + ' \u00b7 ' + el.dataset.tag; capDesc.textContent = el.dataset.desc || '';
-      capEnter.href = el.dataset.href || '#'; if (el.hasAttribute('data-external')) { capEnter.target = '_blank'; capEnter.rel = 'noopener'; } else { capEnter.removeAttribute('target'); }
+      capEnter.firstChild.textContent = (el.dataset.cta || 'ENTER') + ' '; capEnter.href = el.dataset.href || '#'; if (el.hasAttribute('data-external')) { capEnter.target = '_blank'; capEnter.rel = 'noopener'; } else { capEnter.removeAttribute('target'); }
       capInsta.href = el.dataset.insta || '#'; capInsta.hidden = el.hasAttribute('data-external');
       dots.forEach((d, k) => d.setAttribute('aria-current', k === current ? 'true' : 'false'));
-      cap.classList.toggle('dark', el.dataset.ink === 'dark'); cap.classList.remove('out');
+      cap.classList.toggle('dark', el.dataset.ink === 'dark'); cap.classList.toggle('hazard', el.dataset.nav === 'media'); cap.classList.remove('out');
     }, reduceMotion ? 0 : 200);
   };
+  // first visit only: nudge the arrows once the intro line has faded
+  { let seen = false; try { seen = localStorage.getItem('bp-nudged'); } catch (e) {}
+    if (!seen) setTimeout(() => { const a = document.getElementById('next'), b = document.getElementById('prev'); a.classList.add('nudge--next'); b.classList.add('nudge--prev');
+      try { localStorage.setItem('bp-nudged', '1'); } catch (e) {} }, 5200); }
   const intro = document.getElementById('intro'); setTimeout(() => intro.classList.add('gone'), 4500);
   render(true);
   // some browsers need a nudge once the centre video is ready
@@ -213,6 +241,6 @@
   };
   syncNav(true);
   const _render = render;
-  render = function (first) { _render(first); syncNav(false); syncCap(); };
-  syncCap();
+  render = function (first) { _render(first); syncNav(false); syncCap(); tapeField.classList.toggle('on', items[current].dataset.nav === 'media'); lampEl.classList.toggle('on', items[current].dataset.nav === 'productions'); };
+  syncCap(); tapeField.classList.toggle('on', items[current].dataset.nav === 'media'); lampEl.classList.toggle('on', items[current].dataset.nav === 'productions');
 })();
